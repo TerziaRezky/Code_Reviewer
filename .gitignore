@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # --- Python ---
 __pycache__/
 *.pyc
@@ -251,4 +251,4 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
->>>>>>> 819f4c2ac5e67ba28c1a435b1b19547f9d35ef39
+
