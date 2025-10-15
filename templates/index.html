@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <title>AI Code Reviewer — Fixer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Header dengan gradient dan animasi -->
+    <header class="main-header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-robot"></i>
+          <h1>AI Code Reviewer</h1>
+        </div>
+        <p class="tagline">Review, analisis, dan perbaiki kode Anda dengan AI</p>
+        <div id="aiStatus" class="ai-status">
+          <i class="fas fa-sync fa-spin"></i> Checking AI Status...
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Input Section -->
+      <section class="input-section">
+        <div class="input-header">
+          <h2><i class="fas fa-code"></i> Masukkan Kode</h2>
+          <div class="language-selector">
+            <label for="language"><i class="fas fa-globe"></i> Bahasa:</label>
+            <select id="language">
+              <option value="python" selected>Python</option>
+              <option value="javascript">JavaScript</option>
+              <option value="cpp">C / C++</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="code-input-container">
+          <textarea id="codeInput" placeholder="Tempelkan kode Anda di sini...&#10;&#10;Contoh:&#10;def calculate_sum(numbers):&#10;    total = 0&#10;    for i in range(len(numbers)):&#10;        total += numbers[i]&#10;    return total" rows="14"></textarea>
+          <div class="code-stats">
+            <span id="lineCount">0 baris</span>
+            <span id="charCount">0 karakter</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="reviewBtn" class="primary-btn" onclick="reviewCode()">
+            <i class="fas fa-search"></i>
+            <span class="btn-text">Review & Fix Code</span>
+            <span class="btn-loading" style="display:none;">
+              <i class="fas fa-spinner fa-spin"></i> Processing...
+            </span>
+          </button>
+          <button id="clearBtn" class="secondary-btn" onclick="clearCode()">
+            <i class="fas fa-broom"></i> Clear
+          </button>
+        </div>
+      </section>
+
+      <!-- Error Section -->
+      <section id="errorSection" class="error-section" style="display:none;">
+        <div class="error-header">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Terjadi Error</h3>
+        </div>
+        <p id="errorMessage" class="error-message"></p>
+      </section>
+
+      <!-- Results Section -->
+      <section id="resultSection" class="result-section" style="display:none;">
+        <!-- Analysis Overview -->
+        
+     
+
+        <!-- Detailed Analysis -->
+        <div class="detailed-analysis">
+          <h2><i class="fas fa-search-plus"></i> Analisis Detail</h2>
+          <div class="result-grid">
+            <div class="result-category">
+              <div class="category-header">
+                <i class="fas fa-bug"></i>
+                <h3>Syntax Errors</h3>
+              </div>
+              <div id="syntaxErrors" class="result-content"></div>
+            </div>
+            <div class="result-category">
+              <div class="category-header">
+                <i class="fas fa-paint-brush"></i>
+                <h3>Style Issues</h3>
+              </div>
+              <div id="styleIssues" class="result-content"></div>
+            </div>
+            <div class="result-category">
+              <div class="category-header">
+                <i class="fas fa-bolt"></i>
+                <h3>Efficiency Suggestions</h3>
+              </div>
+              <div id="efficiencySuggestions" class="result-content"></div>
+            </div>
+            <div class="result-category">
+              <div class="category-header">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Improvement Suggestions</h3>
+              </div>
+              <div id="improvementSuggestions" class="result-content"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Fixed Code Section -->
+        <div class="ai-section">
+          <div class="ai-header">
+            <i class="fas fa-robot"></i>
+            <h2>Kode Hasil Perbaikan AI</h2>
+            <span class="ai-badge" id="aiBadge">
+              <i class="fas fa-brain"></i> AI Enhanced
+            </span>
+          </div>
+          
+          <div class="code-output-container">
+            <div class="code-header">
+              <span class="file-type" id="fileType">python</span>
+              <div class="code-actions">
+                <button id="copyBtn" class="copy-btn" onclick="copyFixedCode()">
+                  <i class="far fa-copy"></i> Salin Kode
+                </button>
+                <button id="downloadBtn" class="download-btn" onclick="downloadCode()">
+                  <i class="fas fa-download"></i> Download
+                </button>
+              </div>
+            </div>
+            <pre id="aiFixedCode" class="fixed-code"><code></code></pre>
+          </div>
+          
+          <div class="ai-info">
+            <div class="processing-info">
+              <i class="fas fa-clock"></i>
+              <span id="processingTime">Processing time: -</span>
+            </div>
+            <p id="aiNote" class="ai-note">
+              Kode ini telah dianalisis dan diperbaiki oleh AI. Selalu review manual sebelum digunakan.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p>Dibuat dengan <i class="fas fa-heart"></i> menggunakan Flask & Groq AI</p>
+      <p class="version">v1.0 | AI Code Reviewer</p>
+    </footer>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

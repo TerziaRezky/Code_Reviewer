@@ -1,0 +1,44 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# --- Virtual Environment ---
+venv/
+env/
+
+# --- Environment Variables ---
+.env
+
+# --- VSCode / Editor ---
+.vscode/
+.idea/
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Logs & Cache ---
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.pid
+*.seed
+*.cover
+.coverage
+.cache/
+pytest_cache/
+htmlcov/
+
+# --- Node / Frontend ---
+node_modules/
+dist/
+build/
+
+# --- Flask instance folder ---
+instance/
