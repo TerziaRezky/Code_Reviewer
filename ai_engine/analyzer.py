@@ -1,17 +1,36 @@
 import ast
 import re
 import os
-from groq import Groq
+
+# Try import groq; if not available, AI features will be disabled
+try:
+    from groq import Groq
+    _HAS_GROQ = True
+    print("✅ Groq module berhasil diimport di analyzer")
+except ImportError:
+    _HAS_GROQ = False
+    print("⚠️ Groq tidak tersedia di analyzer - AI features dinonaktifkan")
 
 class CodeAnalyzer:
     def __init__(self):
-        # Inisialisasi klien Groq untuk AI feedback
-        self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-
+        # Inisialisasi hasil analisis
         self.syntax_errors = []
         self.style_issues = []
         self.efficiency_suggestions = []
         self.improvement_suggestions = []
+        
+        # Inisialisasi klien Groq hanya jika tersedia
+        self.client = None
+        if _HAS_GROQ:
+            api_key = os.getenv("GROQ_API_KEY")
+            if api_key:
+                try:
+                    self.client = Groq(api_key=api_key)
+                    print("✅ Groq client berhasil diinisialisasi di analyzer")
+                except Exception as e:
+                    print(f"⚠️ Gagal inisialisasi Groq client: {e}")
+            else:
+                print("⚠️ GROQ_API_KEY tidak ditemukan - AI features dinonaktifkan")
     
     def analyze_code(self, code, language='python'):
         """
@@ -193,11 +212,14 @@ class CodeAnalyzer:
             'improvement_suggestions': self.improvement_suggestions
         }
 
-    # === Integrasi AI Feedback (Groq) ===
+    # === Integrasi AI Feedback (Groq) - OPSIONAL ===
     def get_ai_feedback(self, analysis_result):
         """
-        Minta umpan balik tambahan dari AI Groq (model Llama 4 Scout 17B)
+        Minta umpan balik tambahan dari AI Groq (opsional)
         """
+        if not self.client:
+            return "❌ AI features tidak tersedia (Groq tidak terinstall atau GROQ_API_KEY tidak diset)"
+        
         system_prompt = """
         Kamu adalah asisten AI ahli dalam analisis kualitas kode.
         Tugasmu: berikan umpan balik profesional berdasarkan hasil analisis manual.
@@ -215,13 +237,13 @@ class CodeAnalyzer:
 
         try:
             response = self.client.chat.completions.create(
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
+                model="llama3-8b-8192",  # Model yang lebih umum
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ],
                 temperature=0.4,
-                max_tokens=100000000
+                max_tokens=1000  # Fixed reasonable limit
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
